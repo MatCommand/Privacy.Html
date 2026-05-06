@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MatCommand Wrestling Drills v127</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#050805" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="MatCommand Wrestling" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="title-bar">
+      <div class="title-spacer"></div>
+      <div class="title-center">
+        <img src="logo.png" alt="MatCommand Wrestling" class="brand-logo" />
+      </div>
+      <div class="title-actions">
+        <button id="bottomPrimaryActionBtn" class="ghost-btn primary-bottom-action" type="button">Go To Timer</button>
+        <button id="bottomNextActionBtn" class="ghost-btn primary-bottom-action" type="button">Next</button>
+        <button id="coachModeBtn" class="ghost-btn coach-btn" type="button">Coach Mode</button>
+        <button id="fullscreenBtn" class="ghost-btn">Fullscreen</button>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <aside class="left-rail">
+        <button class="side-tab active home-tab" data-tab="homeView"><span>Home</span></button>
+        <button class="side-tab builder-tab" data-tab="builderView"><span>Builder</span></button>
+        <button class="side-tab drills-tab" data-tab="drillsView"><span>Drills</span></button>
+        <button class="side-tab conditioning-tab" data-tab="conditioningView"><span>Condition</span></button>
+        <button class="side-tab live-tab" data-tab="liveView"><span>Live</span><span>Wrestle</span></button>
+      </aside>
+
+      <main class="content-area">
+        <section id="homeView" class="view active">
+          <div class="home-container panel">
+            <div class="home-hero">
+              <div class="home-brand-row">
+                <img src="logo.png" alt="MatCommand Wrestling" class="home-logo" />
+                <div>
+                  <div class="home-kicker">MatCommand Wrestling</div>
+                  <h1>What do you want to run?</h1>
+                </div>
+              </div>
+              <button id="homeStartPracticeBtn" class="home-start-card" type="button">
+                <span class="home-card-icon">▶</span>
+                <span class="home-card-copy"><strong>Start Practice</strong><em>Run the timer with Coach Mode and your selected drill flow.</em></span>
+              </button>
+              <button id="homePracticeBuilderBtn" class="home-builder-card" type="button">
+                <span class="home-card-icon">＋</span>
+                <span class="home-card-copy"><strong>Practice Builder</strong><em>Create and save a custom session with drills and conditioning for today.</em></span>
+              </button>
+            </div>
+
+            <div class="home-section-title">Choose a mode</div>
+            <div class="home-mode-grid">
+              <button id="homeDrillsBtn" class="home-mode-card home-mode-drills" type="button">
+                <span class="home-mode-icon">🤼</span>
+                <strong>Drills</strong>
+                <em>Technique drills and instruction</em>
+              </button>
+              <button id="homeConditioningBtn" class="home-mode-card home-mode-conditioning" type="button">
+                <span class="home-mode-icon">💪</span>
+                <strong>Conditioning</strong>
+                <em>Strength, cardio, and finishers</em>
+              </button>
+              <button id="homeLiveBtn" class="home-mode-card home-mode-live" type="button">
+                <span class="home-mode-icon">⏱</span>
+                <strong>Live Wrestling</strong>
+                <em>Match-style timer and live goes</em>
+              </button>
+            </div>
+
+            <div class="home-helper-row">
+              <button id="homeCoachBtn" class="home-helper-btn coach-helper" type="button">Coach Mode</button>
+              <button id="homeImportExportBtn" class="home-helper-btn" type="button">Import / Export</button>
+            </div>
+          </div>
+        </section>
+
+
+        <section id="builderView" class="view">
+          <div class="practice-builder-panel panel">
+            <div class="builder-hero-row">
+              <div>
+                <div class="home-kicker">Practice Builder</div>
+                <h2>Create today's session</h2>
+                <p class="builder-subtitle">Choose drills and conditioning, set the time or reps, save it, then run it in Coach Mode.</p>
+              </div>
+              <button id="builderRunTopBtn" class="wide-btn builder-run-top" type="button">Run Selected Session</button>
+            </div>
+
+            <div class="builder-layout">
+              <section class="builder-card builder-create-card">
+                <div class="section-title-row">
+                  <div class="section-title builder-name-title">NAME</div>
+                  <div id="builderSessionCount" class="small-muted">0 items</div>
+                </div>
+                <label class="builder-label builder-name-label" for="builderSessionName">Name this practice session</label>
+                <input id="builderSessionName" class="builder-input" type="text" maxlength="80" placeholder="Example: Tuesday Youth Practice" />
+
+                <div class="builder-pick-panel builder-phone-flow">
+                  <div class="builder-pick-topline compact">
+                    <div>
+                      <div class="builder-pick-title">Build your session</div>
+                      <div id="builderSelectedCount" class="small-muted">Tap items to add them. Switch tabs anytime.</div>
+                    </div>
+                  </div>
+                  <div class="builder-mobile-tabs" role="tablist" aria-label="Practice builder tabs">
+                    <button class="active" type="button" data-builder-panel="drill">Drills</button>
+                    <button type="button" data-builder-panel="conditioning">Conditioning</button>
+                    <button type="button" data-builder-panel="selected">Save / Selected <span id="builderSelectedBadge" class="builder-selected-badge">0</span></button>
+                  </div>
+                  <div id="builderLibraryPane" class="builder-library-pane">
+                    <div id="builderCategoryChips" class="builder-category-chips" aria-label="Practice builder categories"></div>
+                    <div id="builderItemPicker" class="builder-item-picker" aria-label="Practice builder items"></div>
+                  </div>
+                  <div id="builderSelectedPane" class="builder-selected-pane hidden">
+                    <div class="selected-pane-head">
+                      <strong>Save / Selected Session</strong>
+                      <button id="builderClearBtn" class="tiny-danger" type="button">Clear</button>
+                    </div>
+                    <div id="builderCurrentList" class="builder-current-list"></div>
+                  </div>
+                </div>
+
+                <div class="builder-action-row bottom-actions builder-sticky-actions">
+                  <button id="builderSaveBtn" class="wide-btn" type="button">Save</button>
+                  <button id="builderSaveRunBtn" class="wide-btn builder-save-run" type="button">Save & Start</button>
+                  <button id="builderRunBtn" class="wide-btn secondary" type="button">Run</button>
+                </div>
+              </section>
+
+              <section class="builder-card builder-saved-card">
+                <div class="section-title-row">
+                  <div class="section-title">Saved Sessions</div>
+                  <div class="small-muted">Tap to load</div>
+                </div>
+                <div id="builderSavedSessions" class="builder-saved-list"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <section id="drillsView" class="view">
+          <div class="view-grid drills-grid">
+            <section class="timer-panel panel">
+              <div class="panel-heading green">Drill Timer</div>
+              <div class="practice-sticky-stack">
+                <div id="drillNowHeader" class="active-workout-header">Stance and Motion</div>
+                <div id="drillClock" class="big-clock green">05:00</div>
+
+                <div class="primary-controls four">
+                  <button id="drillStartBtn" class="control-btn start duplicate-flow-control" type="button">Start</button>
+                  <button id="drillStopBtn" class="control-btn stop" type="button">Stop</button>
+                  <button id="drillResetBtn" class="control-btn reset" type="button">Reset</button>
+                  <button data-manual-beep class="control-btn beep" type="button">Beep</button>
+                  <button id="drillPrevBtn" class="control-btn secondary duplicate-flow-control" type="button">Prev</button>
+                  <button id="drillNextBtn" class="control-btn next duplicate-flow-control" type="button">Next</button>
+                </div>
+                <div class="quick-nav-row">
+                  <button id="jumpToDrillLibraryBtn" class="quick-nav-btn" type="button">Drill Library</button>
+                </div>
+              </div>
+
+              <div class="current-drill-box">
+                <div class="label-row">
+                  <span class="label">Category</span>
+                  <span id="currentCategory" class="value-tag">Neutral</span>
+                </div>
+                <div id="currentDrillName" class="current-drill-title">Stance and Motion</div>
+                <div id="currentDrillNotes" class="current-drill-notes hidden-note" aria-hidden="true">Footwork, level changes, and stance discipline.</div>
+                <div id="currentDrillCues" class="current-drill-cues"></div>
+              </div>
+
+              <div class="guided-quick-action">
+              </div>
+
+              <div class="guided-box compact-guided-box">
+                <div class="section-title-row">
+                  <div class="section-title">Guided Practice</div>
+                  <div id="planName" class="small-muted">No plan loaded</div>
+                </div>
+                <div class="guided-options compact-guided-options">
+                  <label class="check-line compact-check-line"><input id="autoAdvance" type="checkbox" checked /> Auto advance</label>
+                </div>
+                <div id="planList" class="plan-list"></div>
+              </div>
+
+              <div class="time-edit-box compact-time-edit drill-time-bottom">
+                <div class="time-edit-title">Adjust Selected Drill Time</div>
+                <div class="time-edit-grid drill-time-grid">
+                  <div>
+                    <label for="drillMinutes">Minutes</label>
+                    <input id="drillMinutes" type="number" min="0" max="99" value="5" />
+                  </div>
+                  <div>
+                    <label for="drillSeconds">Seconds</label>
+                    <input id="drillSeconds" type="number" min="0" max="59" value="0" />
+                  </div>
+                  <div>
+                    <label for="guidedRestSec">Rest</label>
+                    <input id="guidedRestSec" type="number" min="0" max="120" value="15" />
+                  </div>
+                  <button id="applyTimeBtn" class="wide-btn">Apply Time</button>
+                  <button id="resetDefaultBtn" class="wide-btn secondary">Reset to 5:00</button>
+                </div>
+              </div>
+
+            </section>
+
+            <section id="drillLibraryPanel" class="library-panel panel unified-library-panel">
+              <div class="preset-wrap">
+                <div class="section-title-row">
+                  <div class="section-title">One-Tap Practices</div>
+                  <div class="small-muted">Pick a plan, hit Start</div>
+                </div>
+                <div id="oneTapSavedSessions" class="one-tap-saved-sessions" aria-label="Saved practice sessions"></div>
+                <div class="preset-buttons">
+                  <button class="preset-btn" data-preset="youth">Youth Practice</button>
+                  <button class="preset-btn" data-preset="conditioning">Conditioning</button>
+                  <button class="preset-btn" data-preset="technique">Technique Day</button>
+                  <button class="preset-btn" data-preset="liveheavy">Live Heavy</button>
+                  <button class="preset-btn" data-preset="week1">Week 1</button>
+                  <button class="preset-btn" data-preset="week2">Week 2</button>
+                  <button class="preset-btn" data-preset="week3">Week 3</button>
+                  <button class="preset-btn" data-preset="chainflow">Chain Flow</button>
+                  <button class="preset-btn" data-preset="week4">Week 4</button>
+                </div>
+              </div>
+
+              <div class="categories-wrap">
+                <div class="section-title">Categories</div>
+                <div id="categoryList" class="category-list"></div>
+              </div>
+
+              <div class="drills-wrap">
+                <div class="section-title-row">
+                  <div class="section-title" id="drillListTitle">Neutral Drills</div>
+                  <div class="small-muted">Click a drill to load it and keep order</div>
+                </div>
+                <div id="drillList" class="drill-list"></div>
+              </div>
+
+              <div class="manage-data-box">
+                <div class="section-title-row">
+                  <div class="section-title">Manage Data</div>
+                  <div class="small-muted">Backup, restore, or reset</div>
+                </div>
+                <div class="manage-data-actions">
+                  <button id="addDrillBtn" class="mini-action">+ Add Drill</button>
+                  <button id="exportLibraryBtn" class="mini-action secondary">Export Backup</button>
+                  <button id="importLibraryBtn" class="mini-action secondary">Import Backup</button>
+                  <button id="resetAppDataBtn" class="mini-action danger">Reset App Data</button>
+                  <input id="importLibraryFile" type="file" accept="application/json,.json" hidden />
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="conditioningView" class="view">
+          <div class="view-grid drills-grid conditioning-grid">
+            <section class="timer-panel panel">
+              <div class="panel-heading green" id="conditioningPanelHeading">Conditioning</div>
+              <div class="practice-sticky-stack conditioning-sticky-stack">
+                <div id="conditioningNowTitle" class="timer-now-title">Select Exercise</div>
+                <div id="conditioningComingUp" class="timer-coming-up">Pick from the Conditioning Library</div>
+                <div id="conditioningClock" class="big-clock green">--</div>
+                <div id="conditioningRepPanel" class="conditioning-rep-panel hidden">
+                  <div class="rep-kicker">Rep-based exercise</div>
+                  <div class="rep-target-line" id="conditioningRepLine"><strong id="conditioningRepTarget">Select Exercise: 10 Reps</strong></div>
+                  <div class="rep-help">Kids count the reps. Tap Done when the set is complete.</div>
+                </div>
+                <div id="tenDrillProgress" class="ten-drill-progress hidden">
+                  <div>Current set: <strong id="tenDrillStage">10 pushups + 10 situps</strong></div>
+                  <button id="tenDrillDoneBtn" class="wide-btn">Done Set</button>
+                </div>
+                <div class="primary-controls four">
+                  <button id="conditioningStartBtn" class="control-btn start duplicate-flow-control" type="button">Start</button>
+                  <button id="conditioningStopBtn" class="control-btn stop" type="button">Stop</button>
+                  <button id="conditioningResetBtn" class="control-btn reset" type="button">Reset</button>
+                  <button data-manual-beep class="control-btn beep" type="button">Beep</button>
+                  <button id="conditioningPrevBtn" class="control-btn secondary duplicate-flow-control" type="button">Prev</button>
+                  <button id="conditioningNextBtn" class="control-btn next duplicate-flow-control" type="button">Next</button>
+                </div>
+                <div class="quick-nav-row conditioning-library-shortcut-row">
+                  <button id="jumpToConditioningLibraryBtn" class="quick-nav-btn conditioning-library-shortcut" type="button">Conditioning Library</button>
+                </div>
+                <div class="guided-box compact-guided-box conditioning-flow-box conditioning-queue-box">
+                  <div class="section-title-row"><div class="section-title">Conditioning Queue</div><div id="conditioningPlanName" class="small-muted">No finisher loaded</div></div>
+                  <div class="guided-options compact-guided-options"><label class="check-line compact-check-line"><input id="conditioningAutoAdvance" type="checkbox" checked /> Auto advance</label></div>
+                  <div id="conditioningPlanList" class="plan-list"></div>
+                </div>
+              </div>
+
+              <details class="time-edit-box compact-time-edit conditioning-time-bottom" open>
+                <summary class="time-edit-title collapsible-summary">Adjust Selected Conditioning</summary>
+                <div class="time-edit-grid conditioning-edit-grid collapsible-body">
+                  <div><label for="conditioningMode">Mode</label><select id="conditioningMode"><option value="time">Timed</option><option value="reps" selected>Reps</option></select></div>
+                  <div><label for="conditioningMinutes">Minutes</label><input id="conditioningMinutes" type="number" min="0" max="99" value="1" /></div>
+                  <div><label for="conditioningSeconds">Seconds</label><input id="conditioningSeconds" type="number" min="0" max="59" value="0" /></div>
+                  <div><label for="conditioningReps">Reps</label><input id="conditioningReps" type="number" min="1" max="999" value="25" /></div>
+                  <div><label for="conditioningRestSec">Rest</label><input id="conditioningRestSec" type="number" min="0" max="120" value="15" /></div>
+                  <label class="check-line water-break-control"><input id="conditioningWaterBreaks" type="checkbox" /> Water breaks</label>
+                  <div><label for="conditioningWaterEvery">Every</label><select id="conditioningWaterEvery"><option value="3" selected>3 exercises</option><option value="4">4 exercises</option><option value="5">5 exercises</option></select></div>
+                  <div><label for="conditioningWaterSeconds">Water</label><select id="conditioningWaterSeconds"><option value="30">30 sec</option><option value="45" selected>45 sec</option><option value="60">60 sec</option></select></div>
+                  <button id="applyConditioningBtn" class="wide-btn">Apply</button>
+                  <button id="resetConditioningDefaultBtn" class="wide-btn secondary">Reset Default</button>
+                </div>
+              </details>
+
+              <div class="current-drill-box conditioning-description-bottom">
+                <div class="label-row"><span class="label">Category</span><span id="currentConditioningCategory" class="value-tag">Conditioning</span></div>
+                <div id="currentConditioningName" class="current-drill-title">Select an exercise</div>
+                <div id="currentConditioningNotes" class="current-drill-notes hidden-note" aria-hidden="true">Lower chest to the floor and press to full extension.</div>
+                <div id="currentConditioningCues" class="current-drill-cues"><div class="cue-how"><strong>Steps:</strong> Pick an exercise from the Conditioning Library to begin.</div></div>
+              </div>
+            </section>
+            <section id="conditioningLibraryPanel" class="library-panel panel unified-library-panel">
+              <div class="library-top-row conditioning-library-top-row">
+                <div class="library-actions primary-library-actions">
+                </div>
+              </div>
+              <div class="preset-wrap"><div class="section-title-row"><div class="section-title">One-Tap Finishers</div><div class="small-muted">Pick it and run the flow</div></div><div class="preset-buttons">
+                <button class="conditioning-preset-btn" data-conditioning-preset="quickburn">Quick Burn</button>
+                <button class="conditioning-preset-btn" data-conditioning-preset="hard">Hard Conditioning</button>
+                <button class="conditioning-preset-btn" data-conditioning-preset="sprintday">Sprint Day</button>
+                <button class="conditioning-preset-btn" data-conditioning-preset="core">Core Burnout</button>
+                <button class="conditioning-preset-btn" data-conditioning-preset="corestarter">Core Starter</button>
+                <button class="conditioning-preset-btn" data-conditioning-preset="corecrusher">Core Crusher</button>
+              </div></div>
+              <div class="categories-wrap"><div class="section-title">Categories</div><div id="conditioningCategoryList" class="category-list"></div></div>
+              <div class="drills-wrap"><div class="section-title-row"><div class="section-title" id="conditioningListTitle">Wrestling Conditioning</div><div class="small-muted">Click an exercise to load it</div></div><div id="conditioningList" class="drill-list"></div></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="liveView" class="view">
+          <div class="view-grid live-grid">
+            <section class="panel live-main-panel">
+              <div class="panel-heading green">Live Wrestling</div>
+              <div class="live-mode-top">
+                <button class="live-mode-choice active" data-live-mode-button="goes">Live Goes</button>
+                <button class="live-mode-choice" data-live-mode-button="ironman">Iron Man</button>
+                <button class="live-mode-choice" data-live-mode-button="sharkbait">Shark Bait</button>
+                <button class="live-mode-choice" data-live-mode-button="king">King of the Mat</button>
+                <button class="live-mode-choice" data-live-mode-button="toetouch">Toe Touch</button>
+              </div>
+
+              <div class="live-summary-grid">
+                <div class="summary-box">
+                  <span>Mode</span>
+                  <strong id="liveModeLabel">Live Goes</strong><div id="liveModeNotes" class="small-muted mode-notes">Simple timed goes for multiple groups.</div>
+                </div>
+                <div class="summary-box">
+                  <span>Groups</span>
+                  <strong id="groupCountLabel">4</strong>
+                </div>
+                <div class="summary-box">
+                  <span>Current Round</span>
+                  <strong id="roundLabel">1 of 4</strong>
+                </div>
+                <div class="summary-box">
+                  <span>Phase</span>
+                  <strong id="phaseLabel">Wrestle</strong>
+                </div>
+              </div>
+
+              <div id="liveNowHeader" class="active-workout-header live-now-header" data-live-phase-label>Live Goes • Group 1 Wrestling</div>
+              <div id="liveClock" class="big-clock yellow">01:00</div>
+
+              <div class="current-live-box">
+                <div class="live-title" id="liveCurrentLabel" data-live-current-label>Group 1 Wrestling</div>
+                <div class="live-subtitle" id="liveNextLabel" data-live-next-label>Next: Rest / Switch</div>
+              </div>
+
+              <div class="primary-controls five live-primary-controls">
+                <button id="liveStartBtn" class="control-btn start">Start</button>
+                <button id="liveStopBtn" class="control-btn stop">Stop</button>
+                <button id="liveResetBtn" class="control-btn reset">Reset</button>
+                <button id="liveBackBtn" class="control-btn secondary">Prev</button>
+                <button id="liveSkipBtn" class="control-btn next">Next</button>
+              </div>
+
+              <div class="sub-controls two live-beep-row">
+                <button data-manual-beep class="wide-btn secondary">Beep</button>
+              </div>
+            </section>
+
+            <section class="panel live-setup-panel">
+              <div class="panel-heading green">Setup</div>
+              <div class="live-form-grid">
+                <div>
+                  <label for="liveMode">Mode</label>
+                  <select id="liveMode">
+                    <option value="goes">Live Goes</option>
+                    <option value="ironman">Iron Man Rotation</option>
+                    <option value="sharkbait">Shark Bait</option>
+                    <option value="king">King of the Mat</option>
+                    <option value="toetouch">Toe Touch Game</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="groupCount">Groups</label>
+                  <input id="groupCount" type="number" min="1" max="20" value="4" />
+                </div>
+                <div>
+                  <label for="workMin">Work Min</label>
+                  <input id="workMin" type="number" min="0" max="99" value="1" />
+                </div>
+                <div>
+                  <label for="workSec">Work Sec</label>
+                  <input id="workSec" type="number" min="0" max="59" value="0" />
+                </div>
+                <div>
+                  <label for="restSec">Rest Sec</label>
+                  <input id="restSec" type="number" min="0" max="59" value="15" />
+                </div>
+                <div>
+                  <label for="roundsCount">Rounds</label>
+                  <input id="roundsCount" type="number" min="1" max="50" value="4" />
+                </div>
+              </div>
+
+              <div class="optional-names-box">
+                <div class="section-title-row">
+                  <div class="section-title">Optional Group Names</div>
+                  <div class="small-muted">Leave blank to use Group 1, Group 2, etc.</div>
+                <textarea id="groupNames" rows="7" placeholder="One group name per line&#10;Lightweights&#10;Middleweights&#10;Heavyweights"></textarea>
+              </div>
+
+              <div class="rotation-preview-box">
+                <div class="section-title-row">
+                  <div class="section-title">Rotation Preview</div>
+                  <div id="rotationSummary" class="small-muted">4 rounds</div>
+                </div>
+                <div id="rotationPreview" class="rotation-preview"></div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="addDrillDialog" class="add-drill-dialog">
+    <form method="dialog" class="dialog-card" id="addDrillForm">
+      <h2>Add New Drill</h2>
+      <div class="dialog-grid">
+        <div>
+          <label for="newDrillCategory">Category</label>
+          <select id="newDrillCategory"></select>
+        </div>
+        <div>
+          <label for="newDrillName">Drill Name</label>
+          <input id="newDrillName" type="text" maxlength="80" placeholder="Example: Knee Pull Single" required />
+        </div>
+        <div class="full-width">
+          <label for="newDrillNotes">Notes</label>
+          <textarea id="newDrillNotes" rows="4" placeholder="Short coaching note"></textarea>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="cancelAddDrill" class="wide-btn secondary">Cancel</button>
+        <button type="submit" class="wide-btn">Add Drill</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="onboardingDialog" class="onboarding-dialog">
+    <div class="dialog-card onboarding-card">
+      <h2>MatCommand Wrestling</h2>
+      <p class="onboarding-lead">Run a clean practice session without guessing what comes next.</p>
+      <ul class="onboarding-list">
+        <li><strong>Step 1:</strong> pick Drills, Conditioning, or Live Wrestling.</li>
+        <li><strong>Step 2:</strong> choose a one-tap plan or select an item from the library.</li>
+        <li><strong>Step 3:</strong> use Start/Stop, Prev, and Next from the timer. Extra settings stay below the queue.</li>
+      </ul>
+      <p class="small-muted">Use Quick Start for a full guided flow, or choose a mode and run from the timer.</p>
+      <div class="dialog-actions">
+        <button type="button" id="closeOnboardingBtn" class="wide-btn">Start Coaching</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="coachMode" class="coach-mode" aria-hidden="true">
+    <div class="coach-topbar">
+      <img src="logo.png" alt="MatCommand Wrestling" class="coach-logo" />
+      <button id="coachExitBtn" class="coach-exit">Exit Coach Mode</button>
+    </div>
+    <div class="coach-content">
+      <div id="coachModeLabel" class="coach-mode-label">Drill Timer</div>
+      <div id="coachTitle" class="coach-title">Ready</div>
+      <div id="coachClock" class="coach-clock green">05:00</div>
+      <div id="coachSubtitle" class="coach-subtitle">Category: Neutral</div>
+      <div id="coachNext" class="coach-next">Select a drill or live mode.</div>
+      <div class="coach-controls" aria-label="Coach controls">
+        <button id="coachPrevBtn" class="coach-control prev">Prev</button>
+        <button id="coachToggleBtn" class="coach-control primary">Start</button>
+        <button id="coachAddThirtyBtn" class="coach-control add-time">+30 sec</button>
+        <button id="coachNextBtn" class="coach-control next">Next Drill</button>
+        <button data-manual-beep class="coach-control beep">BEEP</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Service worker intentionally disabled for Capacitor Android wrapping to prevent stale white-screen caches.
+  </script>
+</body>
+</html>
